@@ -4,6 +4,8 @@ using UnityEngine.InputSystem;
 
 public class GameInput : MonoBehaviour
 {
+    private const String PLAYER_PREFS_BINDINGS = "InputBindings";
+
     public static GameInput Instance { get; private set; }
 
     private PlayerInputAction playerInputActions;
@@ -11,6 +13,7 @@ public class GameInput : MonoBehaviour
     public event EventHandler OnInteractAction;
     public event EventHandler OnInteractAlternateAction;
     public event EventHandler OnPauseAction;
+    public event EventHandler OnRebindBinding;
 
     public enum Binding
     {
@@ -30,6 +33,10 @@ public class GameInput : MonoBehaviour
 
         playerInputActions = new PlayerInputAction();
         playerInputActions.Player.Enable();
+
+        if (PlayerPrefs.HasKey(PLAYER_PREFS_BINDINGS)) {
+            playerInputActions.LoadBindingOverridesFromJson(PlayerPrefs.GetString(PLAYER_PREFS_BINDINGS));
+        }
 
         playerInputActions.Player.Interact.performed += Interact_performed;
         playerInputActions.Player.InteractAlternate.performed += InteractAlternate_performed;
@@ -124,15 +131,15 @@ public class GameInput : MonoBehaviour
                 break;
             case Binding.Interact:
                 inputAction = playerInputActions.Player.Interact;
-                bindingIndex = 1;
+                bindingIndex = 0;
                 break;
             case Binding.Interact_Alternate:
                 inputAction = playerInputActions.Player.InteractAlternate;
-                bindingIndex = 1;
+                bindingIndex = 0;
                 break;
             case Binding.Pause:
                 inputAction = playerInputActions.Player.Pause;
-                bindingIndex = 1;
+                bindingIndex = 0;
                 break;
 
         }
@@ -145,7 +152,10 @@ public class GameInput : MonoBehaviour
                  playerInputActions.Player.Enable();
                  onActionRebound();
 
-                 
+                 PlayerPrefs.SetString(PLAYER_PREFS_BINDINGS, playerInputActions.SaveBindingOverridesAsJson());
+                 PlayerPrefs.Save();
+
+                 OnRebindBinding?.Invoke(this, EventArgs.Empty);
              })
             .Start();
     }

@@ -99,6 +99,7 @@ public class OptionUI : MonoBehaviour
     {
         this.onCloseButtonAction= onCloseButtonAction;
         gameObject.SetActive(true);
+        soundEffectsButton.Select();
     }
 
     private void ShowPressToRebindKey()

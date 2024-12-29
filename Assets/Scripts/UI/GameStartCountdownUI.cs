@@ -5,7 +5,16 @@ using UnityEngine;
 
 public class GameStartCountdownUI : MonoBehaviour
 {
+    private const string NUMBER_POPUP = "NumberPopUp";
+
     [SerializeField] private TextMeshProUGUI countdownText;
+
+    private Animator animator;
+    private int previouCountdownNumber;
+
+    private void Awake() {
+        animator = GetComponent<Animator>();
+    }
 
     private void Start()
     {
@@ -28,7 +37,16 @@ public class GameStartCountdownUI : MonoBehaviour
 
     private void Update()
     {
-        countdownText.text = Mathf.Ceil( KitchenGameManager.instance.GetCountToStartTimer()).ToString(); 
+        int countdownNumber = Mathf.CeilToInt(KitchenGameManager.instance.GetCountToStartTimer());
+
+        countdownText.text = countdownNumber.ToString();
+        if (previouCountdownNumber != countdownNumber) {
+            previouCountdownNumber = countdownNumber;
+            animator.SetTrigger(NUMBER_POPUP);
+            SoundManager.Instance.PlayCountdownSound();
+        }
+        
+
         // we can also use ("F2") or ("#.##") inside to string to display just number 2 number after decimal
     }
 

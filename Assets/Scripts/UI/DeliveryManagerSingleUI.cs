@@ -20,8 +20,7 @@ public class DeliveryManagerSingleUI : MonoBehaviour
     {
         recipeNameText.text = recipeSO.recipeName;
 
-        foreach (Transform child in iconContainer)
-        {
+        foreach (Transform child in iconContainer) {
             if (child == iconTemplate) continue;
             Destroy(child.gameObject);
         }
