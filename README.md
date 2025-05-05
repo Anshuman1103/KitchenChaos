@@ -17,7 +17,6 @@ You are the chef in a chaotic kitchen! Prepare, cook, and serve dishes before th
 | Unity           | Game Engine                        |
 | C#              | Scripting & Logic                  |
 | Blender         | 3D Asset Creation                  |
-| ASP.NET MVC     | Backend logic & web integration (optional) |
 | Git & GitHub    | Version Control                    |
 
 ---
